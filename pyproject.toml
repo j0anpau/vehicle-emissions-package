@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vehicle-emissions-package"
+version = "0.1.0"
+description = "Configurable transport lifecycle emissions package for generating merged WTW and LCA dataframes."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "Joan Pau"}
+]
+dependencies = ["pandas>=2.0"]
+keywords = ["transport", "emissions", "lifecycle", "wtw", "lca", "mobility"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/j0anpau/vehicle-emissions-package"
+Repository = "https://github.com/j0anpau/vehicle-emissions-package"
+Issues = "https://github.com/j0anpau/vehicle-emissions-package/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
