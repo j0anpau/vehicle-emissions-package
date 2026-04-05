@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life-Cycle Emissions — Transport Technology Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --ink:       #0f0f0d;
+  --ink-2:     #3a3a35;
+  --ink-3:     #6b6b63;
+  --ink-4:     #a8a89e;
+  --paper:     #faf9f6;
+  --paper-2:   #f2f0eb;
+  --paper-3:   #e8e5dd;
+  --rule:      rgba(15,15,13,0.1);
+  --rule-2:    rgba(15,15,13,0.06);
+  --accent:    #0077bb;
+  --accent-2:  #ee7733;
+  --wtw-ttw:   #0077bb;
+  --wtw-wtt:   #33bbee;
+  --b1-flu:    #009988;
+  --b1-mfg:    #006655;
+  --b1-asm:    #004433;
+  --b1-tra:    #002211;
+  --b2-inf:    #cc3311;
+  --b2-svc:    #ee7733;
+  --b3-dis:    #bbbbbb;
+  --serif:     'DM Serif Display', Georgia, serif;
+  --body:      'Literata', Georgia, serif;
+  --mono:      'DM Mono', 'Courier New', monospace;
+  --radius:    4px;
+  --radius-lg: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Masthead ── */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 0 48px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.masthead-left {
+  flex: 1;
+  padding: 28px 0 24px;
+  border-right: 1px solid var(--rule);
+  padding-right: 32px;
+}
+.masthead-right {
+  width: 320px;
+  padding: 28px 0 24px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.report-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.report-title {
+  font-family: var(--serif);
+  font-size: 38px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.report-subtitle {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-2);
+}
+.masthead-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  line-height: 1.9;
+}
+.masthead-meta strong {
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+/* ── Layout ── */
+.page {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: calc(100vh - 120px);
+}
+
+/* ── Control panel ── */
+.controls {
+  background: var(--paper-2);
+  border-right: 1px solid var(--rule);
+  padding: 28px 24px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.controls-section {
+  margin-bottom: 22px;
+}
+.ctrl-heading {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+.ctrl-row {
+  margin-bottom: 10px;
+}
+.ctrl-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  font-family: var(--body);
+}
+.ctrl-val {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  min-width: 52px;
+  text-align: right;
+}
+input[type=range] {
+  width: 100%;
+  height: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--paper-3);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+input[type=range]::-moz-range-thumb {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--paper);
+}
+.reset-btn {
+  width: 100%;
+  padding: 7px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all .18s;
+  margin-top: 6px;
+}
+.reset-btn:hover { background: var(--paper-3); color: var(--ink); }
+
+/* ── Main content ── */
+.content {
+  padding: 32px 40px 48px;
+}
+
+/* ── Section headers ── */
+.section {
+  margin-bottom: 40px;
+}
+.section-number {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--ink-4);
+  margin-bottom: 4px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.section-desc {
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.6;
+  max-width: 680px;
+  margin-bottom: 18px;
+  font-style: italic;
+  border-left: 2px solid var(--paper-3);
+  padding-left: 14px;
+}
+.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 36px 0;
+}
+
+/* ── Mode filters ── */
+.mode-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.mf-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all .15s;
+}
+.mf-btn.active, .mf-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ── View toggle ── */
+.view-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: fit-content;
+}
+.vt-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  border-right: 1px solid var(--rule);
+  transition: all .15s;
+}
+.vt-btn:last-child { border-right: none; }
+.vt-btn.active { background: var(--ink); color: var(--paper); }
+
+/* ── Unit toggle ── */
+.unit-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.ut-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all .15s;
+}
+.ut-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.unit-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-left: auto;
+}
+
+/* ── KPI cards ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+.kpi-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 5px;
+}
+.kpi-val {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--ink);
+  line-height: 1;
+}
+.kpi-unit {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-left: 3px;
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: var(--paper-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--rule-2);
+}
+.legend-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-2);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.legend-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--rule);
+  margin: 0 4px;
+}
+
+/* ── Chart ── */
+.chart-container {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 16px;
+  position: relative;
+  margin-bottom: 20px;
+}
+.chart-wrap { position: relative; width: 100%; }
+
+/* ── Table ── */
+.data-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+.data-table thead tr {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--paper-3);
+}
+.data-table th {
+  text-align: left;
+  padding: 9px 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.data-table th.r { text-align: right; }
+.data-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--rule-2);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 12px;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--paper-2); }
+.data-table td.r {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.data-table td.bold { font-weight: 500; }
+.data-table td.muted { color: var(--ink-3); font-family: var(--mono); font-size: 10px; }
+.data-table td.mode-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .05em;
+  color: var(--ink-4);
+  text-transform: uppercase;
+}
+
+/* ── Methodology note ── */
+.method-box {
+  background: var(--paper-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px;
+  margin-top: 32px;
+}
+.method-box h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.method-box p {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  font-weight: 300;
+}
+.method-box p + p { margin-top: 6px; }
+
+/* ── Color swatch pills in method ── */
+.swatch {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--paper-2);
+}
+footer p {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  letter-spacing: .04em;
+}
+</style>
+</head>
+<body>
+
+<!-- Masthead -->
+<header class="masthead">
+  <div class="masthead-left">
+    <div class="report-label">Technical Research Report &nbsp;·&nbsp; Transport Emissions</div>
+    <h1 class="report-title">Life-Cycle Emissions<br><em>Transport Technology Assessment</em></h1>
+    <p class="report-subtitle">Well-to-Wheel operational emissions + Embodied LCA (B1–B3) across 18 vehicle technologies</p>
+  </div>
+  <div class="masthead-right">
+    <div class="masthead-meta">
+      <strong>Scope</strong> &nbsp; Well-to-Wheel + Embodied<br>
+      <strong>Boundary</strong> &nbsp; B1 manufacturing · B2 use · B3 EoL<br>
+      <strong>Functional unit</strong> &nbsp; gCO₂eq / pkm · vkm<br>
+      <strong>Grid mix</strong> &nbsp; World ITF 2020
+    </div>
+  </div>
+</header>
+
+<!-- Main layout -->
+<div class="page">
+
+  <!-- Control panel -->
+  <aside class="controls">
+    <div class="controls-section">
+      <div class="ctrl-heading">Electric grid</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px" id="grid-scenario-btns">
+        <button class="mf-btn" data-grid="16"   data-name="Norway">🇳🇴 Norway</button>
+        <button class="mf-btn" data-grid="58"   data-name="France">🇫🇷 France</button>
+        <button class="mf-btn" data-grid="149"  data-name="Spain">🇪🇸 Spain</button>
+        <button class="mf-btn" data-grid="369"  data-name="Toronto">🇨🇦 Toronto</button>
+        <button class="mf-btn" data-grid="386"  data-name="USA avg.">🇺🇸 USA avg.</button>
+        <button class="mf-btn" data-grid="564"  data-name="World avg." data-default="true">🌍 World</button>
+        <button class="mf-btn" data-grid="476"  data-name="Mexico">🇲🇽 Mexico</button>
+        <button class="mf-btn" data-grid="296"  data-name="Chile">🇨🇱 Chile</button>
+        <button class="mf-btn" data-grid="581"  data-name="Shanghai">🇨🇳 Shanghai</button>
+        <button class="mf-btn" data-grid="509"  data-name="Taipei">🇹🇼 Taipei</button>
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Grid WTT (gCO₂/kWh)</span><span class="ctrl-val" id="v-ewtt">564</span></div>
+        <input type="range" id="s-ewtt" min="10" max="900" step="1" value="563.7">
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div class="ctrl-heading">Consumption multiplier</div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Cars &amp; Taxis</span><span class="ctrl-val" id="v-cm">1.00×</span></div>
+        <input type="range" id="s-cm" min="0.5" max="2.0" step="0.05" value="1.0">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Buses</span><span class="ctrl-val" id="v-bm">1.00×</span></div>
+        <input type="range" id="s-bm" min="0.5" max="2.0" step="0.05" value="1.0">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Bikes &amp; Mopeds</span><span class="ctrl-val" id="v-mm">1.00×</span></div>
+        <input type="range" id="s-mm" min="0.5" max="2.0" step="0.05" value="1.0">
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div class="ctrl-heading">Passenger load (pax / vehicle)</div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Car</span><span class="ctrl-val" id="v-cpl">1.5</span></div>
+        <input type="range" id="s-cpl" min="1.0" max="4.0" step="0.1" value="1.5">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Taxi (incl. deadheading)</span><span class="ctrl-val" id="v-tpl">0.62</span></div>
+        <input type="range" id="s-tpl" min="0.2" max="2.0" step="0.01" value="0.6219">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Bus</span><span class="ctrl-val" id="v-bpl">15.3</span></div>
+        <input type="range" id="s-bpl" min="1" max="60" step="0.5" value="15.3">
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div class="ctrl-heading">PHEV electric share</div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Car PHEV</span><span class="ctrl-val" id="v-cpev">66%</span></div>
+        <input type="range" id="s-cpev" min="0" max="1" step="0.01" value="0.66">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>Taxi PHEV</span><span class="ctrl-val" id="v-tpev">36%</span></div>
+        <input type="range" id="s-tpev" min="0" max="1" step="0.01" value="0.36">
+      </div>
+    </div>
+
+    <button class="reset-btn" id="reset-btn">↺ &nbsp; Reset to defaults</button>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Section 1: WTW -->
+    <section class="section" id="sec-wtw">
+      <div class="section-number">Section 01</div>
+      <h2 class="section-title">Well-to-Wheel Operational Emissions</h2>
+      <p class="section-desc">
+        WTW emissions cover the full fuel chain: Well-to-Tank (WTT) upstream extraction,
+        refining and electricity generation, plus Tank-to-Wheel (TTW) direct combustion.
+        Electric vehicles carry zero TTW but inherit upstream grid emissions.
+        All values scale with the emission factors and passenger load set in the control panel.
+      </p>
+
+      <div class="mode-filters" id="mf-wtw"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Best WTW</div><div class="kpi-val" id="kpi-wtw-best">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Worst WTW</div><div class="kpi-val" id="kpi-wtw-worst">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Average WTW</div><div class="kpi-val" id="kpi-wtw-avg">—<span class="kpi-unit">g</span></div></div>
+      </div>
+      <div class="unit-toggle">
+        <button class="ut-btn active" data-unit="pkm" data-chart="wtw">Per passenger-km</button>
+        <button class="ut-btn" data-unit="vkm" data-chart="wtw">Per vehicle-km</button>
+        <span class="unit-note">gCO₂eq per unit</span>
+      </div>
+      <div class="legend" id="leg-wtw">
+        <div class="legend-group"><div class="legend-dot" style="background:var(--wtw-ttw)"></div>TTW — tank-to-wheel (direct combustion)</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--wtw-wtt)"></div>WTT — well-to-tank (upstream fuel chain)</div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-wrap" id="cw-wtw"><canvas id="ch-wtw"></canvas></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 2: Embodied LCA -->
+    <section class="section" id="sec-lca">
+      <div class="section-number">Section 02</div>
+      <h2 class="section-title">Embodied Life-Cycle Emissions (B1–B3)</h2>
+      <p class="section-desc">
+        Embodied emissions capture the carbon cost of manufacturing and operating the vehicle
+        infrastructure beyond fuel. B1 covers vehicle production (fuel supply, manufacturing,
+        assembly, transport); B2 covers infrastructure and services during the use phase;
+        B3 covers end-of-life disposal. These values are fixed per vehicle-km from the
+        model config and are divided by passenger load for the per-pkm view.
+      </p>
+
+      <div class="mode-filters" id="mf-lca"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Best Embodied</div><div class="kpi-val" id="kpi-lca-best">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Worst Embodied</div><div class="kpi-val" id="kpi-lca-worst">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Average Embodied</div><div class="kpi-val" id="kpi-lca-avg">—<span class="kpi-unit">g</span></div></div>
+      </div>
+      <div class="unit-toggle">
+        <button class="ut-btn active" data-unit="pkm" data-chart="lca">Per passenger-km</button>
+        <button class="ut-btn" data-unit="vkm" data-chart="lca">Per vehicle-km</button>
+        <span class="unit-note">gCO₂eq per unit</span>
+      </div>
+      <div class="legend">
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-flu)"></div>B1 fuel prod.</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-mfg)"></div>B1 manufacturing</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-asm)"></div>B1 assembly</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-tra)"></div>B1 transport</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b2-inf)"></div>B2 infrastructure</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b2-svc)"></div>B2 service</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b3-dis)"></div>B3 end of life</div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-wrap" id="cw-lca"><canvas id="ch-lca"></canvas></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 3: Total LCA -->
+    <section class="section" id="sec-total">
+      <div class="section-number">Section 03</div>
+      <h2 class="section-title">Total Life-Cycle Assessment</h2>
+      <p class="section-desc">
+        The full picture: operational WTW emissions stacked against embodied B1–B3.
+        The <em>Emb%</em> column reveals which technologies are dominated by manufacturing
+        versus fuel — a key insight for electrification policy. BEVs typically shift
+        the burden toward B1 manufacturing; high-occupancy transit shifts it toward B2 infrastructure.
+      </p>
+
+      <div class="mode-filters" id="mf-tot"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Best Total LCA</div><div class="kpi-val" id="kpi-tot-best">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Worst Total LCA</div><div class="kpi-val" id="kpi-tot-worst">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Average Total LCA</div><div class="kpi-val" id="kpi-tot-avg">—<span class="kpi-unit">g</span></div></div>
+      </div>
+      <div class="unit-toggle">
+        <button class="ut-btn active" data-unit="pkm" data-chart="tot">Per passenger-km</button>
+        <button class="ut-btn" data-unit="vkm" data-chart="tot">Per vehicle-km</button>
+        <span class="unit-note">gCO₂eq per unit</span>
+      </div>
+      <div class="legend">
+        <div class="legend-group"><div class="legend-dot" style="background:var(--wtw-ttw)"></div>WTW operational (TTW+WTT)</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-mfg)"></div>B1 manufacturing+assembly</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b2-inf)"></div>B2 infrastructure+service</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b3-dis)"></div>B3 end of life</div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-wrap" id="cw-tot"><canvas id="ch-tot"></canvas></div>
+      </div>
+      <div class="data-table-wrap" id="tbl-tot"></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 4: Full disaggregated LCA -->
+    <section class="section" id="sec-full">
+      <div class="section-number">Section 04</div>
+      <h2 class="section-title">Full Disaggregated Life-Cycle Assessment</h2>
+      <p class="section-desc">
+        Every emission component shown simultaneously — from direct combustion (TTW) through
+        upstream fuel supply (WTT), vehicle manufacturing, assembly and transport (B1),
+        infrastructure and service costs during operation (B2), to final disposal (B3).
+        This is the complete picture with no aggregation. Sorted by total LCA ascending.
+      </p>
+
+      <div class="mode-filters" id="mf-full"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Best Full LCA</div><div class="kpi-val" id="kpi-full-best">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Worst Full LCA</div><div class="kpi-val" id="kpi-full-worst">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Average Full LCA</div><div class="kpi-val" id="kpi-full-avg">—<span class="kpi-unit">g</span></div></div>
+      </div>
+      <div class="unit-toggle">
+        <button class="ut-btn active" data-unit="pkm" data-chart="full">Per passenger-km</button>
+        <button class="ut-btn" data-unit="vkm" data-chart="full">Per vehicle-km</button>
+        <span class="unit-note">gCO₂eq per unit</span>
+      </div>
+      <div class="legend">
+        <div class="legend-group"><div class="legend-dot" style="background:var(--wtw-ttw)"></div>TTW — combustion</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--wtw-wtt)"></div>WTT — upstream fuel</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-flu)"></div>B1 fuel prod.</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-mfg)"></div>B1 manufacturing</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-asm)"></div>B1 assembly</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b1-tra)"></div>B1 transport</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b2-inf)"></div>B2 infrastructure</div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b2-svc)"></div>B2 service</div>
+        <div class="legend-divider"></div>
+        <div class="legend-group"><div class="legend-dot" style="background:var(--b3-dis)"></div>B3 end of life</div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-wrap" id="cw-full"><canvas id="ch-full"></canvas></div>
+      </div>
+      <div class="data-table-wrap" id="tbl-full"></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 5: Waterfall -->
+    <section class="section" id="sec-wf">
+      <div class="section-number">Section 05</div>
+      <h2 class="section-title">Cumulative Decomposition — Waterfall</h2>
+      <p class="section-desc">
+        Select any two technologies to compare how each emission component accumulates
+        toward the total LCA. Each bar shows a single sub-component stepping up from
+        the previous running total — making it immediately visible which stages dominate
+        and where the two technologies diverge.
+      </p>
+
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px">
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px">Technology A</div>
+          <select id="wf-sel-a" style="font-family:var(--body);font-size:12px;padding:6px 10px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);color:var(--ink);min-width:180px;cursor:pointer"></select>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px">Technology B</div>
+          <select id="wf-sel-b" style="font-family:var(--body);font-size:12px;padding:6px 10px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);color:var(--ink);min-width:180px;cursor:pointer"></select>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px">Unit</div>
+          <div style="display:flex;gap:0;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden">
+            <button class="ut-btn active" data-unit="pkm" data-chart="wf" style="border:none">Per pkm</button>
+            <button class="ut-btn" data-unit="vkm" data-chart="wf" style="border:none;border-left:1px solid var(--rule)">Per vkm</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px">Y-axis</div>
+          <div style="display:flex;gap:0;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden">
+            <button id="wf-yaxis-free" class="ut-btn active" style="border:none">Independent</button>
+            <button id="wf-yaxis-sync" class="ut-btn" style="border:none;border-left:1px solid var(--rule)">Shared scale</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-3);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--rule)" id="wf-title-a">—</div>
+          <div style="display:flex;gap:12px;margin-bottom:6px">
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Total LCA</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-tot-a">—</div>
+            </div>
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">WTW share</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-wtw-a">—</div>
+            </div>
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Emb. share</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-emb-a">—</div>
+            </div>
+          </div>
+          <div class="chart-container" style="padding:16px">
+            <div style="position:relative;height:340px"><canvas id="ch-wf-a"></canvas></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-3);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--rule)" id="wf-title-b">—</div>
+          <div style="display:flex;gap:12px;margin-bottom:6px">
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Total LCA</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-tot-b">—</div>
+            </div>
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">WTW share</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-wtw-b">—</div>
+            </div>
+            <div style="background:var(--paper-2);border-radius:var(--radius);padding:8px 12px;flex:1">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Emb. share</div>
+              <div style="font-family:var(--serif);font-size:22px" id="wf-emb-b">—</div>
+            </div>
+          </div>
+          <div class="chart-container" style="padding:16px">
+            <div style="position:relative;height:340px"><canvas id="ch-wf-b"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:12px 16px;background:var(--paper-2);border-radius:var(--radius);border:1px solid var(--rule)">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Delta A → B &nbsp;(positive = B higher)</div>
+        <div id="wf-delta-row" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 06: Modal Shift Calculator -->
+    <section class="section" id="sec-modal">
+      <div class="section-number">Section 06</div>
+      <h2 class="section-title">Modal Shift Calculator</h2>
+      <p class="section-desc">
+        If X people switch from one mode to another, how much CO₂ does the city save per year?
+        Define population, daily travel behaviour, and a target modal mix to see the impact.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px">
+        <div>
+          <div class="ctrl-heading" style="margin-bottom:10px">City parameters</div>
+          <div class="ctrl-row">
+            <div class="ctrl-label"><span>Population</span><span class="ctrl-val" id="v-ms-pop">500,000</span></div>
+            <input type="range" id="s-ms-pop" min="10000" max="5000000" step="10000" value="500000">
+          </div>
+          <div class="ctrl-row">
+            <div class="ctrl-label"><span>Daily trips / person</span><span class="ctrl-val" id="v-ms-trips">3.2</span></div>
+            <input type="range" id="s-ms-trips" min="1" max="8" step="0.1" value="3.2">
+          </div>
+          <div class="ctrl-row">
+            <div class="ctrl-label"><span>Avg. trip distance (km)</span><span class="ctrl-val" id="v-ms-dist">7.5</span></div>
+            <input type="range" id="s-ms-dist" min="1" max="30" step="0.5" value="7.5">
+          </div>
+        </div>
+        <div>
+          <div class="ctrl-heading" style="margin-bottom:10px">Current modal share (%)</div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Car (ICE gas.)</span><span class="ctrl-val" id="v-ms-from-car">55</span></div><input type="range" id="s-ms-from-car" min="0" max="100" step="1" value="55"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Bus ICE</span><span class="ctrl-val" id="v-ms-from-bus">20</span></div><input type="range" id="s-ms-from-bus" min="0" max="100" step="1" value="20"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Bike</span><span class="ctrl-val" id="v-ms-from-bike">10</span></div><input type="range" id="s-ms-from-bike" min="0" max="100" step="1" value="10"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Walk</span><span class="ctrl-val" id="v-ms-from-walk">15</span></div><input type="range" id="s-ms-from-walk" min="0" max="100" step="1" value="15"></div>
+          <div id="ms-from-warn" style="font-family:var(--mono);font-size:10px;color:#cc3311;margin-top:4px"></div>
+        </div>
+        <div>
+          <div class="ctrl-heading" style="margin-bottom:10px">Target modal share (%)</div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Car BEV</span><span class="ctrl-val" id="v-ms-to-car">20</span></div><input type="range" id="s-ms-to-car" min="0" max="100" step="1" value="20"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Bus BEV</span><span class="ctrl-val" id="v-ms-to-bus">25</span></div><input type="range" id="s-ms-to-bus" min="0" max="100" step="1" value="25"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>eBike</span><span class="ctrl-val" id="v-ms-to-bike">30</span></div><input type="range" id="s-ms-to-bike" min="0" max="100" step="1" value="30"></div>
+          <div class="ctrl-row"><div class="ctrl-label"><span>Walk</span><span class="ctrl-val" id="v-ms-to-walk">25</span></div><input type="range" id="s-ms-to-walk" min="0" max="100" step="1" value="25"></div>
+          <div id="ms-to-warn" style="font-family:var(--mono);font-size:10px;color:#cc3311;margin-top:4px"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div class="kpi-card"><div class="kpi-label">Current annual CO₂</div><div class="kpi-val" id="kpi-ms-cur">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Target annual CO₂</div><div class="kpi-val" id="kpi-ms-tar">—</div></div>
+        <div class="kpi-card" style="border-color:#009988"><div class="kpi-label">Annual saving</div><div class="kpi-val" id="kpi-ms-save" style="color:#006655">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Reduction</div><div class="kpi-val" id="kpi-ms-pct">—</div></div>
+      </div>
+      <div class="chart-container">
+        <div style="position:relative;height:220px"><canvas id="ch-modal"></canvas></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 08: City Typology -->
+    <section class="section" id="sec-city">
+      <div class="section-number">Section 08</div>
+      <h2 class="section-title">City Typology — Grid Intensity Sensitivity</h2>
+      <p class="section-desc">
+        Electric vehicle emissions are highly dependent on the local electricity grid.
+        Select a city profile to instantly recalculate all BEV and eBike emissions with
+        that city's real grid carbon intensity. This is the Hyper-LOCAL dimension:
+        the same vehicle technology performs very differently in Oslo vs Warsaw vs Mumbai.
+      </p>
+      <div style="margin-bottom:16px">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Select city profile</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="city-btns"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+        <div class="kpi-card"><div class="kpi-label">Grid intensity</div><div class="kpi-val" id="kpi-city-grid">—<span class="kpi-unit">gCO₂/kWh</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Car BEV WTW/pkm</div><div class="kpi-val" id="kpi-city-bev">—<span class="kpi-unit">g</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">vs World avg.</div><div class="kpi-val" id="kpi-city-delta">—</div></div>
+      </div>
+      <div class="chart-container">
+        <div style="position:relative;height:260px"><canvas id="ch-city"></canvas></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Section 09: Mobility Bundles -->
+    <section class="section" id="sec-bundle">
+      <div class="section-number">Section 09</div>
+      <h2 class="section-title">Mobility Package Comparison</h2>
+      <p class="section-desc">
+        Cities are not single technologies — they are <em>systems</em>. Each bundle below
+        represents a mobility archetype from MIT City Science's Hyper-LOCAL framework:
+        a weighted mix of modes reflecting a real urban strategy. Adjust the bundle
+        compositions or define your own city's current mix vs its 2035 target.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px" id="bundle-grid"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+        <div class="kpi-card"><div class="kpi-label">Best bundle / pkm</div><div class="kpi-val" id="kpi-bun-best">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Worst bundle / pkm</div><div class="kpi-val" id="kpi-bun-worst">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Max saving vs worst</div><div class="kpi-val" id="kpi-bun-save">—</div></div>
+      </div>
+      <div class="chart-container">
+        <div style="position:relative;height:260px"><canvas id="ch-bundle"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Methodology note -->
+    <div class="method-box">
+      <h4>Methodology &amp; Sources</h4>
+      <p>
+        <strong>WTW emission factors:</strong> These defaults are synchronised with the Python package model.
+        Electric grid: WTT = 563.7 gCO₂eq/kWh (adjustable via panel).
+        Gasoline: WTT 450.6 + TTW 2320.7 gCO₂eq/L.
+        Diesel: WTT 503.1 + TTW 2480.3 gCO₂eq/L.
+      </p>
+      <p>
+        <strong>Embodied LCA (B1–B3):</strong> Values are defined in gCO₂eq/vkm and converted to gCO₂eq/pkm using passenger load.
+        B1 = vehicle production (fuel production, manufacturing, assembly, transport).
+        B2 = use-phase infrastructure and services.
+        B3 = end-of-life disposal.
+        This HTML uses the same default component values as the reusable Python package.
+      </p>
+      <p>
+        <strong>PHEV weighting:</strong> Car PHEV default EV share = 66%; Taxi PHEV = 36%; Bus PHEV = 0% (operates fully on ICE in the baseline model).
+        All shares remain adjustable via the control panel.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>Well-to-Wheel + Embodied LCA Dashboard &nbsp;·&nbsp; Transport Technology Assessment</p>
+  <p>Values in gCO₂eq &nbsp;·&nbsp; All calculations update in real time</p>
+</footer>
+
+<script>
+const DEFAULTS = {ewtt:563.720573199372,gttw:2320.7184,gwtt:450.57852,dttw:2480.34453333,dwtt:503.12412,cm:1.0,bm:1.0,mm:1.0,cpl:1.5,tpl:0.6219,bpl:15.3,cpev:0.66,tpev:0.36};
+const FIXED = {gttw:2320.7184,gwtt:450.57852,dttw:2480.34453333,dwtt:503.12412};
+
+const VEHICLES = [
+  {id:'Walk',             mode:'Walk',        label:'Walk',           ft:'human',    cons:0.0,            pl:'walk',  B1_flu:0.0,         B1_mfg:0.0,          B1_asm:0.0,         B1_tra:0.0,        B2_inf:0.0,           B2_svc:0.0,           B3_dis:0.0},
+  {id:'Bike_Standalone',  mode:'Bike',        label:'Bike',           ft:'human',    cons:0.0,            pl:'bike',  B1_flu:0.224901215, B1_mfg:5.400336036,  B1_asm:0.827378502, B1_tra:0.778913390, B2_inf:9.471154571,   B2_svc:0.0,           B3_dis:0.235561443},
+  {id:'eBike',            mode:'Bike',        label:'eBike',          ft:'electric', cons:0.020,          pl:'bike',  B1_flu:0.253786021, B1_mfg:9.501605555,  B1_asm:1.431827099, B1_tra:1.046224365, B2_inf:9.479360310,   B2_svc:0.0,           B3_dis:0.304479625},
+  {id:'BikeSharing_Standalone', mode:'BikeSharing',label:'Bike sharing',ft:'human', cons:0.0,            pl:'bike',  B1_flu:0.707715431, B1_mfg:16.708397728, B1_asm:2.603581009, B1_tra:2.551951990, B2_inf:9.489688571,   B2_svc:24.702442,     B3_dis:0.741260860},
+  {id:'eBikeSharing',     mode:'BikeSharing', label:'eBike sharing',  ft:'electric', cons:0.020,          pl:'bike',  B1_flu:0.819318999, B1_mfg:27.721421927, B1_asm:4.593881813, B1_tra:3.016138620, B2_inf:9.502686633,   B2_svc:24.702442,     B3_dis:0.980757250},
+  {id:'Moped_ICE',        mode:'Moped',       label:'Moped ICE',      ft:'gasoline', cons:0.019,          pl:'bike',  B1_flu:0.280874404, B1_mfg:5.516413347,  B1_asm:1.033295634, B1_tra:0.860375093, B2_inf:11.394557605,  B2_svc:0.0,           B3_dis:0.294187739},
+  {id:'Moped_BEV',        mode:'Moped',       label:'Moped BEV',      ft:'electric', cons:0.040,          pl:'bike',  B1_flu:0.247612325, B1_mfg:7.142978091,  B1_asm:1.278492543, B1_tra:0.841914969, B2_inf:11.354081196,  B2_svc:0.0,           B3_dis:0.287875676},
+  {id:'Car_ICE_Gasoline', mode:'Car',         label:'Car ICE gas.',   ft:'gasoline', cons:0.068,          pl:'car',   B1_flu:4.517058591, B1_mfg:24.812507826, B1_asm:4.434004786, B1_tra:0.769209863, B2_inf:18.714685941,  B2_svc:0.0,           B3_dis:1.262397517},
+  {id:'Car_ICE_Diesel',   mode:'Car',         label:'Car ICE diesel', ft:'diesel',   cons:0.068,          pl:'car',   B1_flu:4.517058591, B1_mfg:24.812507826, B1_asm:4.434004786, B1_tra:0.769209863, B2_inf:18.714685941,  B2_svc:0.0,           B3_dis:1.262397517},
+  {id:'Car_PHEV',         mode:'Car',         label:'Car PHEV',       ft:'phev_gas', cons_ev:0.190, cons_ice:0.051, pl:'car',  phev:'cpev', B1_flu:5.023062034, B1_mfg:34.116190396, B1_asm:6.096555980, B1_tra:0.910510017, B2_inf:19.405554801, B2_svc:0.0,           B3_dis:1.494293871},
+  {id:'Car_BEV',          mode:'Car',         label:'Car BEV',        ft:'electric', cons:0.190,          pl:'car',   B1_flu:1.123393941, B1_mfg:50.172147491, B1_asm:8.712736825, B1_tra:0.933541182, B2_inf:18.295736177,  B2_svc:0.0,           B3_dis:1.532091730},
+  {id:'Taxi_ICE',         mode:'Taxi',        label:'Taxi ICE',       ft:'gasoline', cons:0.068,          pl:'taxi',  B1_flu:4.517058591, B1_mfg:13.263779292, B1_asm:2.370242511, B1_tra:0.411188983, B2_inf:16.485477554,  B2_svc:28.48797368,   B3_dis:0.674827476},
+  {id:'Taxi_PHEV',        mode:'Taxi',        label:'Taxi PHEV',      ft:'phev_gas', cons_ev:0.190, cons_ice:0.051, pl:'taxi', phev:'tpev', B1_flu:4.181287614, B1_mfg:18.237157762, B1_asm:3.258976220, B1_tra:0.486722422, B2_inf:17.094053252, B2_svc:19.42505166,   B3_dis:0.798790039},
+  {id:'Taxi_BEV',         mode:'Taxi',        label:'Taxi BEV',       ft:'electric', cons:0.190,          pl:'taxi',  B1_flu:1.354105272, B1_mfg:29.120754419, B1_asm:5.065524286, B1_tra:0.518330168, B2_inf:16.116431183,  B2_svc:16.22100628,   B3_dis:0.850663451},
+  {id:'Bus_ICE',          mode:'Bus',         label:'Bus ICE',        ft:'diesel',   cons:0.409,          pl:'bus',   B1_flu:5.738779901, B1_mfg:109.870948560,B1_asm:14.143192359,B1_tra:2.453556905, B2_inf:55.117412150,  B2_svc:122.1205625,   B3_dis:4.026682823},
+  {id:'Bus_PHEV',         mode:'Bus',         label:'Bus PHEV',       ft:'phev_die', cons_ev:0.0,  cons_ice:0.300, pl:'bus',  phev:'bus0', B1_flu:6.053613983, B1_mfg:108.730109750,B1_asm:14.614393859,B1_tra:2.454628804, B2_inf:54.428327743, B2_svc:89.89806374,   B3_dis:4.028441984},
+  {id:'Bus_BEV',          mode:'Bus',         label:'Bus BEV',        ft:'electric', cons:1.370,          pl:'bus',   B1_flu:1.433815373, B1_mfg:195.840180720,B1_asm:27.157321266,B1_tra:3.400324215, B2_inf:60.074368871,  B2_svc:77.45520676,   B3_dis:5.580480764},
+  {id:'Rail_EV',          mode:'Train',       label:'Rail EV',        ft:'electric', cons:17.72,          pl:'train', B1_flu:0.410677680, B1_mfg:330.792274220,B1_asm:37.949131257,B1_tra:5.413036622, B2_inf:2090.646808,   B2_svc:0.0,           B3_dis:10.804428810},
+];
+
+const CMULT = {Walk:'mm',Bike:'mm',BikeSharing:'mm',Moped:'mm',Car:'cm',Taxi:'cm',Bus:'bm',Train:'bm'};
+const MODES = ['all','Walk','Bike','BikeSharing','Moped','Car','Taxi','Bus','Train'];
+const MODE_LBL = {all:'All modes',Walk:'Walk',Bike:'Bike',BikeSharing:'Bike sharing',Moped:'Moped',Car:'Car',Taxi:'Taxi',Bus:'Bus',Train:'Train'};
+
+const CHART_COLORS = {
+  wtw_ttw:'#0077bb', wtw_wtt:'#33bbee',
+  B1_flu:'#009988',  B1_mfg:'#006655',  B1_asm:'#004433',  B1_tra:'#002211',
+  B2_inf:'#cc3311',  B2_svc:'#ee7733',  B3_dis:'#bbbbbb'
+};
+
+let state = {
+  mode:  {wtw:'all', lca:'all', tot:'all', full:'all'},
+  unit:  {wtw:'pkm', lca:'pkm', tot:'pkm', full:'pkm', wf:'pkm'},
+  charts:{wtw:null, lca:null, tot:null, full:null, wfa:null, wfb:null}
+};
+
+function getP(){
+  const o={...FIXED};
+  o.ewtt=+document.getElementById('s-ewtt').value;
+  ['cm','bm','mm','cpl','tpl','bpl','cpev','tpev'].forEach(id=>o[id]=+document.getElementById('s-'+id).value);
+  return o;
+}
+function pload(v,p){
+  return{walk:1,bike:1,car:p.cpl,taxi:p.tpl,bus:p.bpl,train:190}[v.pl]||1;
+}
+function calcRow(v,p){
+  const m=p[CMULT[v.mode]]||1, pl=pload(v,p);
+  let ttw=0,wtt=0;
+  if(v.phev!==undefined){
+    const evs=v.phev==='cpev'?p.cpev:v.phev==='tpev'?p.tpev:0;
+    const ce=(v.cons_ev||0)*m, ci=(v.cons_ice||0)*m;
+    const it=v.ft==='phev_gas'?p.gttw:p.dttw;
+    const iw=v.ft==='phev_gas'?p.gwtt:p.dwtt;
+    ttw=(1-evs)*it*ci; wtt=evs*p.ewtt*ce+(1-evs)*iw*ci;
+  }else{
+    const c=(v.cons||0)*m;
+    if(v.ft==='electric'){wtt=p.ewtt*c;}
+    else if(v.ft==='gasoline'){ttw=p.gttw*c;wtt=p.gwtt*c;}
+    else if(v.ft==='diesel'){ttw=p.dttw*c;wtt=p.dwtt*c;}
+  }
+  const r={wtw_ttw_vkm:ttw,wtw_wtt_vkm:wtt,wtw_vkm:ttw+wtt,
+            wtw_ttw_pkm:ttw/pl,wtw_wtt_pkm:wtt/pl,wtw_pkm:(ttw+wtt)/pl};
+  ['B1_flu','B1_mfg','B1_asm','B1_tra','B2_inf','B2_svc','B3_dis'].forEach(c=>{
+    r[c+'_vkm']=v[c]; r[c+'_pkm']=v[c]/pl;
+  });
+  r.emb_vkm=['B1_flu','B1_mfg','B1_asm','B1_tra','B2_inf','B2_svc','B3_dis'].reduce((s,c)=>s+v[c],0);
+  r.emb_pkm=r.emb_vkm/pl;
+  r.total_vkm=r.wtw_vkm+r.emb_vkm;
+  r.total_pkm=r.wtw_pkm+r.emb_pkm;
+  return r;
+}
+
+const fmts={ewtt:v=>Math.round(+v),cm:v=>(+v).toFixed(2)+'×',bm:v=>(+v).toFixed(2)+'×',mm:v=>(+v).toFixed(2)+'×',cpl:v=>(+v).toFixed(1),tpl:v=>(+v).toFixed(2),bpl:v=>(+v).toFixed(1),cpev:v=>Math.round(+v*100)+'%',tpev:v=>Math.round(+v*100)+'%'};
+
+function mkChart(canvasId,labels,datasets,unit){
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(15,15,13,0.07)';
+  const lc=isDark?'#888':'#6b6b63';
+  return new Chart(document.getElementById(canvasId),{
+    type:'bar',
+    data:{labels,datasets},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)} gCO₂eq`}}},
+      scales:{
+        x:{stacked:true,grid:{color:gc},ticks:{color:lc,font:{size:10,family:'DM Mono, monospace'}},
+           title:{display:true,text:`gCO₂eq / ${unit}`,color:lc,font:{size:10}}},
+        y:{stacked:true,grid:{display:false},ticks:{color:lc,font:{size:11,family:'Literata, serif'}}}
+      }
+    }
+  });
+}
+
+function setKPI(prefix,vals,unit){
+  document.getElementById('kpi-'+prefix+'-best').innerHTML  = vals[0].toFixed(1)+'<span class="kpi-unit">g/'+unit+'</span>';
+  document.getElementById('kpi-'+prefix+'-worst').innerHTML = vals[vals.length-1].toFixed(1)+'<span class="kpi-unit">g/'+unit+'</span>';
+  const avg=(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1);
+  document.getElementById('kpi-'+prefix+'-avg').innerHTML   = avg+'<span class="kpi-unit">g/'+unit+'</span>';
+}
+
+function renderWTW(){
+  const p=getP(); const u=state.unit.wtw;
+  const veh=state.mode.wtw==='all'?VEHICLES:VEHICLES.filter(v=>v.mode===state.mode.wtw);
+  const res=veh.map(v=>({v,r:calcRow(v,p)})).sort((a,b)=>a.r['wtw_'+u]-b.r['wtw_'+u]);
+  setKPI('wtw',res.map(x=>x.r['wtw_'+u]),u);
+  const bh=Math.max(160,res.length*34+50);
+  document.getElementById('cw-wtw').style.height=bh+'px';
+  if(state.charts.wtw)state.charts.wtw.destroy();
+  state.charts.wtw=mkChart('ch-wtw',res.map(x=>x.v.label),[
+    {label:'TTW',data:res.map(x=>+x.r['wtw_ttw_'+u].toFixed(3)),backgroundColor:CHART_COLORS.wtw_ttw,stack:'s'},
+    {label:'WTT',data:res.map(x=>+x.r['wtw_wtt_'+u].toFixed(3)),backgroundColor:CHART_COLORS.wtw_wtt,stack:'s'},
+  ],u);
+}
+
+function renderLCA(){
+  const p=getP(); const u=state.unit.lca;
+  const veh=state.mode.lca==='all'?VEHICLES:VEHICLES.filter(v=>v.mode===state.mode.lca);
+  const res=veh.map(v=>({v,r:calcRow(v,p)})).sort((a,b)=>a.r['emb_'+u]-b.r['emb_'+u]);
+  setKPI('lca',res.map(x=>x.r['emb_'+u]),u);
+  const bh=Math.max(160,res.length*34+50);
+  document.getElementById('cw-lca').style.height=bh+'px';
+  if(state.charts.lca)state.charts.lca.destroy();
+  state.charts.lca=mkChart('ch-lca',res.map(x=>x.v.label),[
+    {label:'B1 fuel prod.',  data:res.map(x=>+x.r['B1_flu_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B1_flu,stack:'s'},
+    {label:'B1 mfg.',        data:res.map(x=>+x.r['B1_mfg_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B1_mfg,stack:'s'},
+    {label:'B1 assembly',    data:res.map(x=>+x.r['B1_asm_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B1_asm,stack:'s'},
+    {label:'B1 transport',   data:res.map(x=>+x.r['B1_tra_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B1_tra,stack:'s'},
+    {label:'B2 infra.',      data:res.map(x=>+x.r['B2_inf_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B2_inf,stack:'s'},
+    {label:'B2 service',     data:res.map(x=>+x.r['B2_svc_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B2_svc,stack:'s'},
+    {label:'B3 end of life', data:res.map(x=>+x.r['B3_dis_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B3_dis,stack:'s'},
+  ],u);
+}
+
+function renderTotal(){
+  const p=getP(); const u=state.unit.tot;
+  const veh=state.mode.tot==='all'?VEHICLES:VEHICLES.filter(v=>v.mode===state.mode.tot);
+  const res=veh.map(v=>({v,r:calcRow(v,p)})).sort((a,b)=>a.r['total_'+u]-b.r['total_'+u]);
+  setKPI('tot',res.map(x=>x.r['total_'+u]),u);
+  const bh=Math.max(160,res.length*34+50);
+  document.getElementById('cw-tot').style.height=bh+'px';
+  if(state.charts.tot)state.charts.tot.destroy();
+  state.charts.tot=mkChart('ch-tot',res.map(x=>x.v.label),[
+    {label:'WTW operational',   data:res.map(x=>+x.r['wtw_'+u].toFixed(3)),backgroundColor:CHART_COLORS.wtw_ttw,stack:'s'},
+    {label:'B1 manufacturing',  data:res.map(x=>+(x.r['B1_flu_'+u]+x.r['B1_mfg_'+u]+x.r['B1_asm_'+u]+x.r['B1_tra_'+u]).toFixed(3)),backgroundColor:CHART_COLORS.B1_mfg,stack:'s'},
+    {label:'B2 infra+service',  data:res.map(x=>+(x.r['B2_inf_'+u]+x.r['B2_svc_'+u]).toFixed(3)),backgroundColor:CHART_COLORS.B2_inf,stack:'s'},
+    {label:'B3 end of life',    data:res.map(x=>+x.r['B3_dis_'+u].toFixed(3)),backgroundColor:CHART_COLORS.B3_dis,stack:'s'},
+  ],u);
+  const rows=res.map(x=>{
+    const tot=x.r['total_'+u];
+    const embPct=tot>0?Math.round(x.r['emb_'+u]/tot*100)+'%':'—';
+    return`<tr>
+      <td>${x.v.label}</td><td class="mode-tag">${x.v.mode}</td>
+      <td class="r">${x.r['wtw_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['emb_'+u].toFixed(2)}</td>
+      <td class="r bold">${tot.toFixed(2)}</td>
+      <td class="r muted">${embPct}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tbl-tot').innerHTML=`<table class="data-table"><thead><tr><th>Technology</th><th>Mode</th><th class="r">WTW oper.</th><th class="r">Embodied</th><th class="r">Total LCA</th><th class="r">Emb%</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderFull(){
+  const p=getP(); const u=state.unit.full;
+  const veh=state.mode.full==='all'?VEHICLES:VEHICLES.filter(v=>v.mode===state.mode.full);
+  const res=veh.map(v=>({v,r:calcRow(v,p)})).sort((a,b)=>a.r['total_'+u]-b.r['total_'+u]);
+  setKPI('full',res.map(x=>x.r['total_'+u]),u);
+  const bh=Math.max(160,res.length*38+60);
+  document.getElementById('cw-full').style.height=bh+'px';
+  if(state.charts.full)state.charts.full.destroy();
+  state.charts.full=mkChart('ch-full',res.map(x=>x.v.label),[
+    {label:'TTW — combustion',      data:res.map(x=>+x.r['wtw_ttw_'+u].toFixed(3)), backgroundColor:CHART_COLORS.wtw_ttw, stack:'s'},
+    {label:'WTT — upstream fuel',   data:res.map(x=>+x.r['wtw_wtt_'+u].toFixed(3)), backgroundColor:CHART_COLORS.wtw_wtt, stack:'s'},
+    {label:'B1 fuel production',    data:res.map(x=>+x.r['B1_flu_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B1_flu,  stack:'s'},
+    {label:'B1 manufacturing',      data:res.map(x=>+x.r['B1_mfg_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B1_mfg,  stack:'s'},
+    {label:'B1 assembly',           data:res.map(x=>+x.r['B1_asm_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B1_asm,  stack:'s'},
+    {label:'B1 transport',          data:res.map(x=>+x.r['B1_tra_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B1_tra,  stack:'s'},
+    {label:'B2 infrastructure',     data:res.map(x=>+x.r['B2_inf_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B2_inf,  stack:'s'},
+    {label:'B2 service',            data:res.map(x=>+x.r['B2_svc_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B2_svc,  stack:'s'},
+    {label:'B3 end of life',        data:res.map(x=>+x.r['B3_dis_'+u].toFixed(3)),  backgroundColor:CHART_COLORS.B3_dis,  stack:'s'},
+  ],u);
+  const rows=res.map(x=>{
+    const tot=x.r['total_'+u];
+    const wtwPct=tot>0?Math.round(x.r['wtw_'+u]/tot*100)+'%':'—';
+    const embPct=tot>0?Math.round(x.r['emb_'+u]/tot*100)+'%':'—';
+    return`<tr>
+      <td>${x.v.label}</td>
+      <td class="mode-tag">${x.v.mode}</td>
+      <td class="r">${x.r['wtw_ttw_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['wtw_wtt_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B1_flu_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B1_mfg_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B1_asm_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B1_tra_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B2_inf_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B2_svc_'+u].toFixed(2)}</td>
+      <td class="r">${x.r['B3_dis_'+u].toFixed(2)}</td>
+      <td class="r bold">${tot.toFixed(2)}</td>
+      <td class="r muted">${wtwPct} / ${embPct}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tbl-full').innerHTML=`<table class="data-table" style="min-width:900px"><thead><tr>
+    <th>Technology</th><th>Mode</th>
+    <th class="r">TTW</th><th class="r">WTT</th>
+    <th class="r">B1 fuel</th><th class="r">B1 mfg.</th><th class="r">B1 asm.</th><th class="r">B1 tra.</th>
+    <th class="r">B2 inf.</th><th class="r">B2 svc.</th>
+    <th class="r">B3 EoL</th>
+    <th class="r">Total</th><th class="r">WTW% / Emb%</th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+const WF_STEPS = [
+  {key:'wtw_ttw', label:'TTW',         color:'#0077bb'},
+  {key:'wtw_wtt', label:'WTT',         color:'#33bbee'},
+  {key:'B1_flu',  label:'B1 fuel',     color:'#009988'},
+  {key:'B1_mfg',  label:'B1 mfg.',     color:'#006655'},
+  {key:'B1_asm',  label:'B1 asm.',     color:'#004433'},
+  {key:'B1_tra',  label:'B1 tra.',     color:'#002211'},
+  {key:'B2_inf',  label:'B2 infra.',   color:'#cc3311'},
+  {key:'B2_svc',  label:'B2 service',  color:'#ee7733'},
+  {key:'B3_dis',  label:'B3 EoL',      color:'#bbbbbb'},
+];
+
+function buildWaterfallChart(canvasId, r, u, yMax){
+  const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc  = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
+  const lc  = isDark ? '#999' : '#6b6b63';
+  const vals = WF_STEPS.map(s => +(r[s.key+'_'+u]||0));
+  const labels   = WF_STEPS.map(s => s.label);
+  const colors   = WF_STEPS.map(s => s.color);
+  const floats   = [];
+  const bars     = [];
+  let running = 0;
+  vals.forEach(v => { floats.push(+running.toFixed(4)); bars.push(+v.toFixed(4)); running += v; });
+  const total = +running.toFixed(4);
+  labels.push('Total');
+  floats.push(0);
+  bars.push(total);
+  colors.push('#444');
+
+  const yScaleCfg = {
+    stacked:true, grid:{display:false},
+    ticks:{color:lc, font:{size:10, family:'DM Mono, monospace'}}
+  };
+  if(yMax != null) { yScaleCfg.min = 0; yScaleCfg.max = yMax; }
+
+  return new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label:'_float', data:floats, backgroundColor:'transparent', stack:'wf', borderWidth:0 },
+        { label:'Value',  data:bars,   backgroundColor:colors,        stack:'wf', borderWidth:0, borderRadius:2 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label: ctx => {
+            if(ctx.datasetIndex===0) return null;
+            const base = floats[ctx.dataIndex];
+            const val  = bars[ctx.dataIndex];
+            const cum  = +(base+val).toFixed(3);
+            return [`${ctx.label}: ${val.toFixed(2)} g`, `Running total: ${cum.toFixed(2)} g`];
+          }
+        }}
+      },
+      scales:{
+        x:{ stacked:true, grid:{color:gc}, ticks:{color:lc, font:{size:10, family:'DM Mono, monospace'}},
+            title:{display:true, text:`gCO₂eq / ${u}`, color:lc, font:{size:10}} },
+        y: yScaleCfg
+      }
+    }
+  });
+}
+
+let wfSharedY = false;
+
+function renderWaterfall(){
+  const p  = getP();
+  const u  = state.unit.wf;
+  const idA = document.getElementById('wf-sel-a').value;
+  const idB = document.getElementById('wf-sel-b').value;
+  const vA  = VEHICLES.find(v=>v.id===idA);
+  const vB  = VEHICLES.find(v=>v.id===idB);
+  if(!vA || !vB) return;
+  const rA  = calcRow(vA, p);
+  const rB  = calcRow(vB, p);
+
+  const totA = rA['total_'+u];
+  const totB = rB['total_'+u];
+  const yMax = wfSharedY ? +(Math.max(totA, totB) * 1.08).toFixed(1) : null;
+
+  function fill(suffix, r, v){
+    const tot = r['total_'+u];
+    document.getElementById('wf-title-'+suffix).textContent = v.label+' — '+v.mode;
+    document.getElementById('wf-tot-'+suffix).innerHTML   = tot.toFixed(2)+'<span style="font-family:var(--mono);font-size:11px;color:var(--ink-3)"> g/'+u+'</span>';
+    document.getElementById('wf-wtw-'+suffix).innerHTML   = (tot>0?Math.round(r['wtw_'+u]/tot*100):0)+'<span style="font-family:var(--mono);font-size:11px;color:var(--ink-3)">%</span>';
+    document.getElementById('wf-emb-'+suffix).innerHTML   = (tot>0?Math.round(r['emb_'+u]/tot*100):0)+'<span style="font-family:var(--mono);font-size:11px;color:var(--ink-3)">%</span>';
+    if(state.charts['wf'+suffix])state.charts['wf'+suffix].destroy();
+    state.charts['wf'+suffix] = buildWaterfallChart('ch-wf-'+suffix, r, u, yMax);
+  }
+  fill('a', rA, vA);
+  fill('b', rB, vB);
+
+  const deltaRow = document.getElementById('wf-delta-row');
+  deltaRow.innerHTML = WF_STEPS.map(s => {
+    const dA = rA[s.key+'_'+u]||0;
+    const dB = rB[s.key+'_'+u]||0;
+    const d  = dB - dA;
+    const sign = d >= 0 ? '+' : '';
+    const bg   = d > 0.01 ? '#cc3311' : d < -0.01 ? '#006655' : '#888';
+    return `<span style="font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:20px;background:${bg};color:#fff">${s.label} ${sign}${d.toFixed(2)}</span>`;
+  }).join('');
+}
+
+// ── §06 Modal Shift ─────────────────────────────────────────────────────
+const MS_MODES = [
+  {from:'Car_ICE_Gasoline', to:'Car_BEV',    fromLabel:'Car ICE', toLabel:'Car BEV'},
+  {from:'Bus_ICE',          to:'Bus_BEV',    fromLabel:'Bus ICE', toLabel:'Bus BEV'},
+  {from:'Bike_Standalone',  to:'eBike',      fromLabel:'Bike',    toLabel:'eBike'},
+  {from:'Walk',             to:'Walk',       fromLabel:'Walk',    toLabel:'Walk'},
+];
+let msChart = null;
+function renderModalShift(){
+  const p = getP();
+  const pop   = +document.getElementById('s-ms-pop').value;
+  const trips = +document.getElementById('s-ms-trips').value;
+  const dist  = +document.getElementById('s-ms-dist').value;
+  const fromShares = [
+    +document.getElementById('s-ms-from-car').value/100,
+    +document.getElementById('s-ms-from-bus').value/100,
+    +document.getElementById('s-ms-from-bike').value/100,
+    +document.getElementById('s-ms-from-walk').value/100,
+  ];
+  const toShares = [
+    +document.getElementById('s-ms-to-car').value/100,
+    +document.getElementById('s-ms-to-bus').value/100,
+    +document.getElementById('s-ms-to-bike').value/100,
+    +document.getElementById('s-ms-to-walk').value/100,
+  ];
+  const fromSum = fromShares.reduce((a,b)=>a+b,0);
+  const toSum   = toShares.reduce((a,b)=>a+b,0);
+  document.getElementById('ms-from-warn').textContent = Math.abs(fromSum-1)>0.01 ? `Sum = ${Math.round(fromSum*100)}% (should be 100%)` : '';
+  document.getElementById('ms-to-warn').textContent   = Math.abs(toSum-1)>0.01   ? `Sum = ${Math.round(toSum*100)}% (should be 100%)`   : '';
+
+  const annualPkm = pop * trips * dist * 365;
+  let curCO2=0, tarCO2=0;
+  const fromVals=[], toVals=[];
+  MS_MODES.forEach((m,i)=>{
+    const vFrom = VEHICLES.find(v=>v.id===m.from);
+    const vTo   = VEHICLES.find(v=>v.id===m.to);
+    const rFrom = calcRow(vFrom, p);
+    const rTo   = calcRow(vTo,   p);
+    const fPkm = rFrom.total_pkm * fromShares[i] * annualPkm / 1e9;
+    const tPkm = rTo.total_pkm   * toShares[i]   * annualPkm / 1e9;
+    curCO2 += fPkm; tarCO2 += tPkm;
+    fromVals.push(+(rFrom.total_pkm * fromShares[i]).toFixed(2));
+    toVals.push(  +(rTo.total_pkm   * toShares[i]).toFixed(2));
+  });
+  const saving = curCO2 - tarCO2;
+  const pct    = curCO2>0 ? (saving/curCO2*100) : 0;
+  const fmt = v => v>=1 ? v.toFixed(1)+' kt' : (v*1000).toFixed(0)+' t';
+  document.getElementById('kpi-ms-cur').innerHTML  = fmt(curCO2)+'<span class="kpi-unit"> CO₂/yr</span>';
+  document.getElementById('kpi-ms-tar').innerHTML  = fmt(tarCO2)+'<span class="kpi-unit"> CO₂/yr</span>';
+  document.getElementById('kpi-ms-save').innerHTML = fmt(saving)+'<span class="kpi-unit"> CO₂/yr</span>';
+  document.getElementById('kpi-ms-pct').innerHTML  = pct.toFixed(1)+'<span class="kpi-unit">%</span>';
+
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(15,15,13,0.07)';
+  const lc=isDark?'#999':'#6b6b63';
+  if(msChart)msChart.destroy();
+  msChart = new Chart(document.getElementById('ch-modal'),{
+    type:'bar',
+    data:{
+      labels: MS_MODES.map(m=>m.fromLabel+' → '+m.toLabel),
+      datasets:[
+        {label:'Current mix',data:fromVals,backgroundColor:'#cc3311'},
+        {label:'Target mix', data:toVals,  backgroundColor:'#009988'},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)} gCO₂eq/pkm (weighted)`}}},
+      scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:10}}},
+              y:{grid:{color:gc},ticks:{color:lc,font:{size:10}},title:{display:true,text:'gCO₂eq/pkm (share-weighted)',color:lc,font:{size:10}}}}}
+  });
+}
+
+// ── §08 City Typology ────────────────────────────────────────────────────
+const CITIES = [
+  {name:'Norway',     grid:16,   flag:'🇳🇴'},
+  {name:'France',     grid:58,   flag:'🇫🇷'},
+  {name:'Spain',      grid:149,  flag:'🇪🇸'},
+  {name:'Toronto',    grid:369,  flag:'🇨🇦'},
+  {name:'USA avg.',   grid:386,  flag:'🇺🇸'},
+  {name:'World avg.', grid:564,  flag:'🌍'},
+  {name:'Mexico',     grid:476,  flag:'🇲🇽'},
+  {name:'Chile',      grid:296,  flag:'🇨🇱'},
+  {name:'Shanghai',   grid:581,  flag:'🇨🇳'},
+  {name:'Taipei',     grid:509,  flag:'🇹🇼'},
+  {name:'Custom',     grid:564,  flag:'⚙️', custom:true},
+];
+let cityChart=null, activeCity='World avg.';
+function buildCityBtns(){
+  const c = document.getElementById('city-btns'); c.innerHTML='';
+  CITIES.forEach(city=>{
+    const b=document.createElement('button');
+    b.className='mf-btn'+(activeCity===city.name?' active':'');
+    b.textContent=city.flag+' '+city.name+(city.custom?'':' ('+city.grid+')');
+    b.addEventListener('click',()=>{
+      if(city.custom){
+        const v=prompt('Enter grid intensity (gCO₂/kWh):',city.grid);
+        if(v&&!isNaN(+v)){city.grid=+v;}
+      }
+      activeCity=city.name;
+      document.querySelectorAll('#city-btns .mf-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderCity();
+    });
+    c.appendChild(b);
+  });
+}
+function renderCity(){
+  const p = getP();
+  const city = CITIES.find(c=>c.name===activeCity)||CITIES[4];
+  const pCity = {...p, ewtt: city.grid};
+  const worldAvg = p.ewtt;
+  document.getElementById('kpi-city-grid').innerHTML = city.grid+'<span class="kpi-unit"> gCO₂/kWh</span>';
+  const bevCity  = calcRow(VEHICLES.find(v=>v.id==='Car_BEV'), pCity);
+  const bevWorld = calcRow(VEHICLES.find(v=>v.id==='Car_BEV'), p);
+  document.getElementById('kpi-city-bev').innerHTML = bevCity.wtw_pkm.toFixed(1)+'<span class="kpi-unit"> g/pkm</span>';
+  const delta = bevCity.wtw_pkm - bevWorld.wtw_pkm;
+  const sign  = delta>=0?'+':'';
+  document.getElementById('kpi-city-delta').innerHTML = sign+delta.toFixed(1)+'<span class="kpi-unit"> g/pkm</span>';
+
+  const evVehicles = VEHICLES.filter(v=>v.ft==='electric'||v.phev!==undefined);
+  const labels=[], worldBars=[], cityBars=[];
+  evVehicles.forEach(v=>{
+    const rW = calcRow(v, p);
+    const rC = calcRow(v, pCity);
+    labels.push(v.label);
+    worldBars.push(+rW.wtw_pkm.toFixed(2));
+    cityBars.push(+rC.wtw_pkm.toFixed(2));
+  });
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(15,15,13,0.07)';
+  const lc=isDark?'#999':'#6b6b63';
+  if(cityChart)cityChart.destroy();
+  cityChart=new Chart(document.getElementById('ch-city'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'World avg. grid',data:worldBars,backgroundColor:'#bbbbbb'},
+      {label:city.name+' grid', data:cityBars, backgroundColor:'#0077bb'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,labels:{color:lc,font:{size:10},boxWidth:12}}},
+      scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:10}}},
+              y:{grid:{color:gc},ticks:{color:lc,font:{size:10}},title:{display:true,text:'WTW gCO₂eq/pkm',color:lc,font:{size:10}}}}}
+  });
+}
+
+// ── §09 Mobility Bundles ─────────────────────────────────────────────────
+const BUNDLES = [
+  {name:'Car-dependent',  color:'#cc3311', shares:{Car_ICE_Gasoline:0.65,Bus_ICE:0.15,Bike_Standalone:0.05,Walk:0.15}},
+  {name:'Transit-first',  color:'#0077bb', shares:{Bus_BEV:0.50,Rail_EV:0.20,eBike:0.15,Walk:0.15}},
+  {name:'15-min city',    color:'#009988', shares:{eBike:0.30,BikeSharing_Standalone:0.20,Walk:0.30,Bus_BEV:0.20}},
+  {name:'Ride-hailing',   color:'#ee7733', shares:{Taxi_ICE:0.40,Car_ICE_Gasoline:0.30,Bus_ICE:0.20,Walk:0.10}},
+  {name:'EV transition',  color:'#33bbee', shares:{Car_BEV:0.40,Bus_BEV:0.30,eBike:0.20,Walk:0.10}},
+  {name:'Custom city',    color:'#bbbbbb', shares:{Car_ICE_Gasoline:0.30,Bus_BEV:0.30,eBike:0.20,Walk:0.20}, custom:true},
+];
+let bundleChart=null;
+function buildBundleGrid(){
+  const g=document.getElementById('bundle-grid'); g.innerHTML='';
+  BUNDLES.forEach((bun,bi)=>{
+    const div=document.createElement('div');
+    div.style.cssText='background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius-lg);padding:12px 14px';
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${bun.color};flex-shrink:0"></div>
+      <div style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--ink-2)">${bun.name}</div>
+    </div>` +
+    Object.entries(bun.shares).map(([vid,share])=>{
+      const v=VEHICLES.find(x=>x.id===vid);
+      const lbl=v?v.label:vid;
+      return `<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+        <span style="color:var(--ink-3)">${lbl}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--ink)">${Math.round(share*100)}%</span>
+      </div>`;
+    }).join('')+
+    `<div style="font-family:var(--serif);font-size:18px;margin-top:8px;border-top:1px solid var(--rule);padding-top:8px" id="bun-val-${bi}">—</div>`;
+    g.appendChild(div);
+  });
+}
+function renderBundles(){
+  const p=getP();
+  const vals=BUNDLES.map(bun=>{
+    let wtd=0;
+    Object.entries(bun.shares).forEach(([vid,share])=>{
+      const v=VEHICLES.find(x=>x.id===vid);
+      if(!v) return;
+      const r=calcRow(v,p);
+      wtd+=r.total_pkm*share;
+    });
+    return +wtd.toFixed(2);
+  });
+  vals.forEach((v,i)=>{
+    const el=document.getElementById('bun-val-'+i);
+    if(el) el.innerHTML=v.toFixed(2)+'<span style="font-family:var(--mono);font-size:10px;color:var(--ink-3)"> g/pkm</span>';
+  });
+  const best=Math.min(...vals), worst=Math.max(...vals);
+  document.getElementById('kpi-bun-best').innerHTML  = best.toFixed(2)+'<span class="kpi-unit"> g/pkm</span>';
+  document.getElementById('kpi-bun-worst').innerHTML = worst.toFixed(2)+'<span class="kpi-unit"> g/pkm</span>';
+  document.getElementById('kpi-bun-save').innerHTML  = (worst-best).toFixed(2)+'<span class="kpi-unit"> g/pkm</span>';
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(15,15,13,0.07)';
+  const lc=isDark?'#999':'#6b6b63';
+  if(bundleChart)bundleChart.destroy();
+  bundleChart=new Chart(document.getElementById('ch-bundle'),{
+    type:'bar',
+    data:{labels:BUNDLES.map(b=>b.name),datasets:[{label:'Total LCA',data:vals,backgroundColor:BUNDLES.map(b=>b.color)}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed.y.toFixed(2)} gCO₂eq/pkm`}}},
+      scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},
+              y:{grid:{color:gc},ticks:{color:lc,font:{size:10}},title:{display:true,text:'gCO₂eq/pkm (weighted avg.)',color:lc,font:{size:10}}}}}
+  });
+}
+
+function renderAll(){renderWTW();renderLCA();renderTotal();renderFull();renderWaterfall();renderModalShift();renderCity();renderBundles();}
+
+// modal shift slider wiring
+['ms-pop','ms-trips','ms-dist','ms-from-car','ms-from-bus','ms-from-bike','ms-from-walk','ms-to-car','ms-to-bus','ms-to-bike','ms-to-walk'].forEach(id=>{
+  const el=document.getElementById('s-'+id);
+  const vo=document.getElementById('v-'+id);
+  if(!el) return;
+  const fmt = id==='ms-pop' ? v=>Number(+v).toLocaleString() : v=>(+v).toFixed(id.includes('trips')||id.includes('dist')?1:0);
+  el.addEventListener('input',()=>{vo.textContent=fmt(el.value);renderModalShift();});
+});
+
+function populateSelects(){
+  const selA = document.getElementById('wf-sel-a');
+  const selB = document.getElementById('wf-sel-b');
+  VEHICLES.forEach((v,i) => {
+    const oA = document.createElement('option'); oA.value=v.id; oA.textContent=v.label+' ('+v.mode+')'; selA.appendChild(oA);
+    const oB = document.createElement('option'); oB.value=v.id; oB.textContent=v.label+' ('+v.mode+')'; selB.appendChild(oB);
+  });
+  selA.value = 'Car_ICE_Gasoline';
+  selB.value = 'Car_BEV';
+  selA.addEventListener('change', renderWaterfall);
+  selB.addEventListener('change', renderWaterfall);
+}
+
+function buildFilters(containerId,chartKey){
+  const c=document.getElementById(containerId); c.innerHTML='';
+  MODES.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mf-btn'+(state.mode[chartKey]===m?' active':'');
+    b.textContent=MODE_LBL[m];
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#'+containerId+' .mf-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); state.mode[chartKey]=m; renderAll();
+    });
+    c.appendChild(b);
+  });
+}
+
+buildFilters('mf-wtw','wtw');
+buildFilters('mf-lca','lca');
+buildFilters('mf-tot','tot');
+buildFilters('mf-full','full');
+populateSelects();
+document.getElementById('wf-yaxis-free').addEventListener('click',()=>{
+  wfSharedY=false;
+  document.getElementById('wf-yaxis-free').classList.add('active');
+  document.getElementById('wf-yaxis-sync').classList.remove('active');
+  renderWaterfall();
+});
+document.getElementById('wf-yaxis-sync').addEventListener('click',()=>{
+  wfSharedY=true;
+  document.getElementById('wf-yaxis-sync').classList.add('active');
+  document.getElementById('wf-yaxis-free').classList.remove('active');
+  renderWaterfall();
+});
+buildCityBtns();
+buildBundleGrid();
+
+document.querySelectorAll('.ut-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const chart=b.dataset.chart;
+    document.querySelectorAll(`.ut-btn[data-chart="${chart}"]`).forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); state.unit[chart]=b.dataset.unit; renderAll();
+  });
+});
+
+['ewtt','cm','bm','mm','cpl','tpl','bpl','cpev','tpev'].forEach(id=>{
+  const el=document.getElementById('s-'+id);
+  const vo=document.getElementById('v-'+id);
+  el.addEventListener('input',()=>{
+    vo.textContent=fmts[id](el.value);
+    document.querySelectorAll('#grid-scenario-btns .mf-btn').forEach(b=>b.classList.remove('active'));
+    renderAll();
+  });
+});
+
+document.querySelectorAll('#grid-scenario-btns .mf-btn').forEach(btn=>{
+  if(btn.dataset.default) btn.classList.add('active');
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#grid-scenario-btns .mf-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const el=document.getElementById('s-ewtt');
+    const vo=document.getElementById('v-ewtt');
+    el.value=btn.dataset.grid;
+    vo.textContent=btn.dataset.grid;
+    renderAll();
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  const resetIds=['ewtt','cm','bm','mm','cpl','tpl','bpl','cpev','tpev'];
+  resetIds.forEach(id=>{
+    const el=document.getElementById('s-'+id);
+    const vo=document.getElementById('v-'+id);
+    if(el){el.value=DEFAULTS[id];vo.textContent=fmts[id](DEFAULTS[id]);}
+  });
+  document.querySelectorAll('#grid-scenario-btns .mf-btn').forEach(b=>{
+    b.classList.toggle('active', !!b.dataset.default);
+  });
+  renderAll();
+});
+
+renderAll();
+</script>
+</body>
+</html>
