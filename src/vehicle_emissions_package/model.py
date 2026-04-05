@@ -153,7 +153,7 @@ DEFAULT_VEHICLE_PARAMS = {
     },
     "Car_ICE_Diesel": {
         "mode": "Car",
-        "consumption": 6.8 / 100,
+        "consumption": 5.4 / 100,
         "fuel_type": "diesel",
         "lifetime_years": 15,
         "annual_mileage": 15000,
