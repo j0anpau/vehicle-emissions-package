@@ -42,7 +42,7 @@ pip install -e .
 ### Install directly from GitHub
 
 ```bash
-pip install git+https://github.com/YOUR_GITHUB_USERNAME/vehicle-emissions-package.git
+pip install git+https://github.com/j0anpau/vehicle-emissions-package.git
 ```
 
 ## Quick start
@@ -50,7 +50,7 @@ pip install git+https://github.com/YOUR_GITHUB_USERNAME/vehicle-emissions-packag
 ```python
 from vehicle_emissions_package import build_df_merged_final
 
-df = build_df_merged_final(electric_wtt=563.720573199372)
+df = build_df_merged_final(electric_wtt=563.72) #. gCO2/kWh - Worldwide, (ITF 2020)
 print(df.head())
 ```
 
