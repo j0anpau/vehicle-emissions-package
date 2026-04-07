@@ -1100,7 +1100,7 @@
       state.charts.full = mkChart('ch-full', res.map(x => x.v.label), [
         { label: 'TTW — combustion', data: res.map(x => +x.r['wtw_ttw_' + u].toFixed(3)), backgroundColor: CHART_COLORS.wtw_ttw, stack: 's' },
         { label: 'WTT — upstream fuel', data: res.map(x => +x.r['wtw_wtt_' + u].toFixed(3)), backgroundColor: CHART_COLORS.wtw_wtt, stack: 's' },
-        { label: 'B1 fuel production', data: res.map(x => +x.r['B1_flu_' + u].toFixed(3)), backgroundColor: CHART_COLORS.B1_flu, stack: 's' },
+        { label: 'B1 fluids', data: res.map(x => +x.r['B1_flu_' + u].toFixed(3)), backgroundColor: CHART_COLORS.B1_flu, stack: 's' },
         { label: 'B1 manufacturing', data: res.map(x => +x.r['B1_mfg_' + u].toFixed(3)), backgroundColor: CHART_COLORS.B1_mfg, stack: 's' },
         { label: 'B1 assembly', data: res.map(x => +x.r['B1_asm_' + u].toFixed(3)), backgroundColor: CHART_COLORS.B1_asm, stack: 's' },
         { label: 'B1 transport', data: res.map(x => +x.r['B1_tra_' + u].toFixed(3)), backgroundColor: CHART_COLORS.B1_tra, stack: 's' },
