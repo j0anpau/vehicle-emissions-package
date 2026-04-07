@@ -689,7 +689,7 @@
           <div class="legend-divider"></div>
           <div class="legend-group legend-toggle active" data-series="2" title="Click to toggle"
             style="cursor:pointer;opacity:1;transition:opacity .15s">
-            <div class="legend-dot" style="background:var(--b1-flu)"></div>B1 fuel prod.
+            <div class="legend-dot" style="background:var(--b1-flu)"></div>B1 fluids
           </div>
           <div class="legend-group legend-toggle active" data-series="3" title="Click to toggle"
             style="cursor:pointer;opacity:1;transition:opacity .15s">
@@ -1125,7 +1125,7 @@
       document.getElementById('tbl-full').innerHTML = `<table class="data-table" style="min-width:900px"><thead><tr>
         <th>Technology</th><th>Mode</th>
         <th class="r">TTW</th><th class="r">WTT</th>
-        <th class="r">B1 fuel</th><th class="r">B1 mfg.</th><th class="r">B1 asm.</th><th class="r">B1 tra.</th>
+        <th class="r">B1 fluids</th><th class="r">B1 mfg.</th><th class="r">B1 asm.</th><th class="r">B1 tra.</th>
         <th class="r">B2 inf.</th><th class="r">B2 svc.</th><th class="r">B3 EoL</th>
         <th class="r">Total</th><th class="r">WTW% / Emb%</th>
       </tr></thead><tbody>${rows}</tbody></table>`;
@@ -1141,7 +1141,7 @@
     const WF_STEPS = [
       { key: 'wtw_ttw', label: 'TTW', color: '#0077bb' },
       { key: 'wtw_wtt', label: 'WTT', color: '#33bbee' },
-      { key: 'B1_flu', label: 'B1 fuel', color: '#009988' },
+      { key: 'B1_flu', label: 'B1 fluids', color: '#009988' },
       { key: 'B1_mfg', label: 'B1 mfg.', color: '#006655' },
       { key: 'B1_asm', label: 'B1 asm.', color: '#004433' },
       { key: 'B1_tra', label: 'B1 tra.', color: '#002211' },
