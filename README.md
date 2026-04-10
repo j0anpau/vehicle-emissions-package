@@ -24,7 +24,7 @@ Requirements: Python >= 3.10, pandas >= 2.0
 ```python
 from vehicle_emissions_package import build_df_merged_final
 
-df = build_df_merged_final(electric_wtt=563.72)  # gCO2/kWh (ITF 2020, World)
+df = build_df_merged_final(electric_wtt=475)  # gCO2/kWh (ITF 2020, World)
 print(df)
 ```
 
@@ -63,27 +63,27 @@ and **12 columns**. All emissions are in **gCO2eq/pkm** (grams of CO2 equivalent
 
 ## Example output
 
-Running with default parameters (`electric_wtt=563.72` gCO2/kWh, world average):
+Running with default parameters (`electric_wtt=475` gCO2/kWh, world average):
 
 | mode        | tech                   |   TTW |   WTT |   WTW |   B1_flu |   B1_mfg |   B1_asm |   B1_tra |   B2_inf |   B2_svc |   B3_dis |
 |:------------|:-----------------------|------:|------:|------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|
 | Bike        | Bike_Standalone        |  0.00 |  0.00 |  0.00 |     0.22 |     5.40 |     0.83 |     0.78 |     9.47 |     0.00 |     0.24 |
-| Bike        | eBike                  |  0.00 | 11.27 | 11.27 |     0.25 |     9.50 |     1.43 |     1.05 |     9.48 |     0.00 |     0.30 |
+| Bike        | eBike                  |  0.00 |  9.50 |  9.50 |     0.25 |     9.50 |     1.43 |     1.05 |     9.48 |     0.00 |     0.30 |
 | BikeSharing | BikeSharing_Standalone |  0.00 |  0.00 |  0.00 |     0.71 |    16.71 |     2.60 |     2.55 |     9.49 |    24.70 |     0.74 |
-| BikeSharing | eBikeSharing           |  0.00 | 11.27 | 11.27 |     0.82 |    27.72 |     4.59 |     3.02 |     9.50 |    24.70 |     0.98 |
-| Bus         | Bus_BEV                |  0.00 | 50.48 | 50.48 |     0.09 |    12.80 |     1.77 |     0.22 |     3.93 |     5.06 |     0.36 |
+| BikeSharing | eBikeSharing           |  0.00 |  9.50 |  9.50 |     0.82 |    27.72 |     4.59 |     3.02 |     9.50 |    24.70 |     0.98 |
+| Bus         | Bus_BEV                |  0.00 | 42.53 | 42.53 |     0.09 |    12.80 |     1.77 |     0.22 |     3.93 |     5.06 |     0.36 |
 | Bus         | Bus_ICE                | 66.30 | 13.45 | 79.75 |     0.38 |     7.18 |     0.92 |     0.16 |     3.60 |     7.98 |     0.26 |
 | Bus         | Bus_PHEV               | 48.63 |  9.87 | 58.50 |     0.40 |     7.11 |     0.96 |     0.16 |     3.56 |     5.88 |     0.26 |
-| Car         | Car_BEV                |  0.00 | 71.40 | 71.40 |     0.75 |    33.45 |     5.81 |     0.62 |    12.20 |     0.00 |     1.02 |
+| Car         | Car_BEV                |  0.00 | 60.17 | 60.17 |     0.75 |    33.45 |     5.81 |     0.62 |    12.20 |     0.00 |     1.02 |
 | Car         | Car_ICE_Diesel         | 89.29 | 18.11 |107.40 |     3.01 |    16.54 |     2.96 |     0.51 |    12.48 |     0.00 |     0.84 |
 | Car         | Car_ICE_Gasoline       |105.21 | 20.43 |125.63 |     3.01 |    16.54 |     2.96 |     0.51 |    12.48 |     0.00 |     0.84 |
-| Car         | Car_PHEV               | 26.83 | 52.34 | 79.16 |     3.35 |    22.74 |     4.06 |     0.61 |    12.94 |     0.00 |     1.00 |
-| Moped       | Moped_BEV              |  0.00 | 22.55 | 22.55 |     0.25 |     7.14 |     1.28 |     0.84 |    11.35 |     0.00 |     0.29 |
+| Car         | Car_PHEV               | 26.83 | 44.92 | 71.75 |     3.35 |    22.74 |     4.06 |     0.61 |    12.94 |     0.00 |     1.00 |
+| Moped       | Moped_BEV              |  0.00 | 19.00 | 19.00 |     0.25 |     7.14 |     1.28 |     0.84 |    11.35 |     0.00 |     0.29 |
 | Moped       | Moped_ICE              | 44.09 |  8.56 | 52.65 |     0.28 |     5.52 |     1.03 |     0.86 |    11.39 |     0.00 |     0.29 |
-| Taxi        | Taxi_BEV               |  0.00 |172.23 |172.23 |     2.18 |    46.83 |     8.15 |     0.83 |    25.91 |    26.08 |     1.37 |
+| Taxi        | Taxi_BEV               |  0.00 |145.12 |145.12 |     2.18 |    46.83 |     8.15 |     0.83 |    25.91 |    26.08 |     1.37 |
 | Taxi        | Taxi_ICE               |253.75 | 49.27 |303.02 |     7.26 |    21.33 |     3.81 |     0.66 |    26.51 |    45.81 |     1.09 |
-| Taxi        | Taxi_PHEV              |121.80 | 85.65 |207.45 |     6.72 |    29.32 |     5.24 |     0.78 |    27.49 |    31.24 |     1.28 |
-| Train       | Rail_EV                |  0.00 | 52.57 | 52.57 |     0.00 |     1.74 |     0.20 |     0.03 |    11.00 |     0.00 |     0.06 |
+| Taxi        | Taxi_PHEV              |121.80 | 75.89 |197.69 |     6.72 |    29.32 |     5.24 |     0.78 |    27.49 |    31.24 |     1.28 |
+| Train       | Rail_EV                |  0.00 | 44.30 | 44.30 |     0.00 |     1.74 |     0.20 |     0.03 |    11.00 |     0.00 |     0.06 |
 | Walk        | Walk                   |  0.00 |  0.00 |  0.00 |     0.00 |     0.00 |     0.00 |     0.00 |     0.00 |     0.00 |     0.00 |
 
 All values in **gCO2eq/pkm**. Column headers abbreviated: TTW = `TTW_gCO2eq_per_pkm`, WTT = `WTT_gCO2eq_per_pkm`, WTW = `WTW_gCO2eq_per_pkm`, B1-B3 columns = `{component}_pkm`.
@@ -143,7 +143,7 @@ Both streams are merged on `(mode, tech)` and sorted alphabetically.
 
 | Fuel | WTT (gCO2/unit) | TTW (gCO2/unit) | Unit |
 |------|------------------:|------------------:|------|
-| Electric | 563.72 | 0.00 | kWh |
+| Electric | 475.00 | 0.00 | kWh |
 | Gasoline | 450.58 | 2320.72 | L |
 | Diesel | 503.12 | 2480.34 | L |
 | Human | 0.00 | 0.00 | -- |

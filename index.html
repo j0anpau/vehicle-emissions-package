@@ -588,15 +588,15 @@
           <button class="mf-btn" data-grid="149" data-name="Spain">🇪🇸 Spain</button>
           <button class="mf-btn" data-grid="369" data-name="Toronto">🇨🇦 Toronto</button>
           <button class="mf-btn" data-grid="386" data-name="USA avg.">🇺🇸 USA avg.</button>
-          <button class="mf-btn" data-grid="564" data-name="World avg." data-default="true">🌍 World</button>
+          <button class="mf-btn" data-grid="475" data-name="World avg." data-default="true">🌍 World</button>
           <button class="mf-btn" data-grid="476" data-name="Mexico">🇲🇽 Mexico</button>
           <button class="mf-btn" data-grid="296" data-name="Chile">🇨🇱 Chile</button>
           <button class="mf-btn" data-grid="581" data-name="Shanghai">🇨🇳 Shanghai</button>
           <button class="mf-btn" data-grid="509" data-name="Taipei">🇹🇼 Taipei</button>
         </div>
         <div class="ctrl-row">
-          <div class="ctrl-label"><span>Grid WTT (gCO₂/kWh)</span><span class="ctrl-val" id="v-ewtt">564</span></div>
-          <input type="range" id="s-ewtt" min="10" max="900" step="1" value="563.7">
+          <div class="ctrl-label"><span>Grid WTT (gCO₂/kWh)</span><span class="ctrl-val" id="v-ewtt">475</span></div>
+          <input type="range" id="s-ewtt" min="10" max="900" step="1" value="475">
         </div>
       </div>
       <div class="controls-section">
@@ -978,7 +978,7 @@
       <div class="method-box">
         <h4>Methodology &amp; Sources</h4>
         <p><strong>WTW emission factors:</strong> These defaults are synchronised with the Python package model.
-          Electric grid: WTT = 563.7 gCO₂eq/kWh (adjustable via panel). Gasoline: WTT 450.6 + TTW 2320.7 gCO₂eq/L.
+          Electric grid: WTT = 475 gCO₂eq/kWh (adjustable via panel). Gasoline: WTT 450.6 + TTW 2320.7 gCO₂eq/L.
           Diesel: WTT 503.1 + TTW 2480.3 gCO₂eq/L.</p>
         <p><strong>Embodied LCA (B1–B3):</strong> Values are defined in gCO₂eq/vkm and converted to gCO₂eq/pkm using
           passenger load. B1 = vehicle production. B2 = use-phase infrastructure and services. B3 = end-of-life
@@ -996,7 +996,7 @@
   </footer>
 
   <script>
-    const DEFAULTS = { ewtt: 563.720573199372, gttw: 2320.7184, gwtt: 450.57852, dttw: 2480.34453333, dwtt: 503.12412, cm: 1.0, bm: 1.0, mm: 1.0, cpl: 1.5, tpl: 0.6219, bpl: 15.3, cpev: 0.66, tpev: 0.36 };
+    const DEFAULTS = { ewtt: 475.0, gttw: 2320.7184, gwtt: 450.57852, dttw: 2480.34453333, dwtt: 503.12412, cm: 1.0, bm: 1.0, mm: 1.0, cpl: 1.5, tpl: 0.6219, bpl: 15.3, cpev: 0.66, tpev: 0.36 };
     const FIXED = { gttw: 2320.7184, gwtt: 450.57852, dttw: 2480.34453333, dwtt: 503.12412 };
 
     const VEHICLES = [
@@ -1299,12 +1299,12 @@
       { name: 'Spain', grid: 149, flag: '🇪🇸' },
       { name: 'Toronto', grid: 369, flag: '🇨🇦' },
       { name: 'USA avg.', grid: 386, flag: '🇺🇸' },
-      { name: 'World avg.', grid: 564, flag: '🌍' },
+      { name: 'World avg.', grid: 475, flag: '🌍' },
       { name: 'Mexico', grid: 476, flag: '🇲🇽' },
       { name: 'Chile', grid: 296, flag: '🇨🇱' },
       { name: 'Shanghai', grid: 581, flag: '🇨🇳' },
       { name: 'Taipei', grid: 509, flag: '🇹🇼' },
-      { name: 'Custom', grid: 564, flag: '⚙️', custom: true },
+      { name: 'Custom', grid: 475, flag: '⚙️', custom: true },
     ];
     let cityChart = null, activeCity = 'World avg.';
     function buildCityBtns() {

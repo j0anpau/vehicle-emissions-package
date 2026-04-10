@@ -21,7 +21,7 @@ from typing import Any
 import pandas as pd
 
 
-DEFAULT_ELECTRIC_WTT = 563.720573199372
+DEFAULT_ELECTRIC_WTT = 475.0
 
 DEFAULT_EMISSION_FACTORS = {
     "electric": {"wtt": DEFAULT_ELECTRIC_WTT, "ttw": 0.0},
