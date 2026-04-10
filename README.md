@@ -4,6 +4,9 @@ A configurable Python package for calculating transport lifecycle emissions.
 It generates a DataFrame with **Well-to-Wheel (WTW)** and **embodied/LCA** emissions
 for 18 vehicle technologies across 9 transport modes, expressed in **gCO2eq per passenger-km**.
 
+The calculations has been adapted from ITF 2020, and methodology used. 
+Embodied emissions have been considered the 'World' avrg 475 gCO2/kwh being - according also IEA 2019, ITF 2020
+
 ## Installation
 
 ```bash
