@@ -1,11 +1,11 @@
-# vehicle-emissions-package
+# pkm-lifecycle-emissions
 
 A configurable Python package for calculating transport lifecycle emissions.
 It generates a DataFrame with **Well-to-Wheel (WTW)** and **embodied/LCA** emissions
 for 18 vehicle technologies across 9 transport modes, expressed in **gCO2eq per passenger-km**.
 
-The calculations has been adapted from ITF 2020, and methodology used. 
-Embodied emissions have been considered the 'World' avrg 475 gCO2/kwh being - according also IEA 2019, ITF 2020
+The calculations have been adapted from ITF 2020 methodology.
+Embodied emissions use the World average grid intensity of 475 gCO2/kWh (IEA 2019, ITF 2020).
 
 ## Installation
 
@@ -22,7 +22,7 @@ Requirements: Python >= 3.10, pandas >= 2.0
 ## Quick start
 
 ```python
-from vehicle_emissions_package import build_df_merged_final
+from pkm_lifecycle_emissions import build_df_merged_final
 
 df = build_df_merged_final(electric_wtt=475)  # gCO2/kWh (ITF 2020, World)
 print(df)
@@ -232,7 +232,7 @@ df = build_df_merged_final(
 ### Explicit configuration workflow
 
 ```python
-from vehicle_emissions_package import (
+from pkm_lifecycle_emissions import (
     get_default_model_config,
     build_df_merged_final_from_config,
 )
