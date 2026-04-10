@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "vehicle-emissions-package"
+name = "pkm-lifecycle-emissions"
 version = "0.1.0"
-description = "Configurable transport lifecycle emissions package for generating merged WTW and LCA dataframes."
+description = "Configurable transport lifecycle emissions model — generates merged WTW and LCA DataFrames in gCO2eq per passenger-km."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}

@@ -39,6 +39,18 @@
       --radius-lg: 8px;
     }
 
+    .dark {
+      --ink: #f0f0ec;
+      --ink-2: #c8c8c0;
+      --ink-3: #8a8a80;
+      --ink-4: #5a5a52;
+      --paper: #0a0a0a;
+      --paper-2: #141414;
+      --paper-3: #1e1e1e;
+      --rule: rgba(255, 255, 255, 0.10);
+      --rule-2: rgba(255, 255, 255, 0.05);
+    }
+
     *,
     *::before,
     *::after {
@@ -55,6 +67,45 @@
       font-family: var(--body);
       font-weight: 400;
       line-height: 1.6;
+      background: var(--paper);
+      color: var(--ink);
+      transition: background .3s, color .3s;
+    }
+
+    /* Theme toggle button */
+    .theme-btn {
+      position: fixed;
+      top: 14px;
+      right: 20px;
+      z-index: 300;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      background: var(--paper-2);
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .theme-btn:hover {
+      background: var(--paper-3);
+      color: var(--ink);
+    }
+
+    /* Dark-mode logo inversion */
+    .dark .logo-img {
+      filter: invert(1);
+    }
+
+    /* Dark-mode select styling */
+    .dark select {
+      background: var(--paper-2) !important;
+      color: var(--ink) !important;
+      border-color: var(--rule) !important;
     }
 
     /* ── Masthead ── */
@@ -544,14 +595,15 @@
 
 <body>
 
-
+  <!-- THEME TOGGLE -->
+  <button class="theme-btn" onclick="toggleTheme()">Dark mode</button>
 
   <!-- Masthead -->
   <header class="masthead">
     <div class="masthead-left">
       <div style="display:flex;align-items:center;gap:18px;margin-bottom:12px">
         <!-- Logo City Science -->
-        <img src="./assets/city-science-logo.png" alt="City Science"
+        <img src="./assets/city-science-logo.png" alt="City Science" class="logo-img"
           style="width:160px;height:auto;flex-shrink:0;object-fit:contain"
           onerror="console.error('Logo no encontrado en ./assets/city-science-logo.svg')">
         <div>
@@ -996,6 +1048,15 @@
   </footer>
 
   <script>
+    // ── Theme toggle ──────────────────────────────────────────────────────────
+    let isDark = false;
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.classList.toggle('dark', isDark);
+      document.querySelector('.theme-btn').textContent = isDark ? 'Light mode' : 'Dark mode';
+      renderAll();
+    }
+
     const DEFAULTS = { ewtt: 475.0, gttw: 2320.7184, gwtt: 450.57852, dttw: 2480.34453333, dwtt: 503.12412, cm: 1.0, bm: 1.0, mm: 1.0, cpl: 1.5, tpl: 0.6219, bpl: 15.3, cpev: 0.66, tpev: 0.36 };
     const FIXED = { gttw: 2320.7184, gwtt: 450.57852, dttw: 2480.34453333, dwtt: 503.12412 };
 
@@ -1065,7 +1126,7 @@
     const FONT = 'Inter, sans-serif';
 
     function mkChart(canvasId, labels, datasets, unit) {
-      const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#888' : '#6b6b63';
       return new Chart(document.getElementById(canvasId), {
@@ -1151,7 +1212,7 @@
     ];
 
     function buildWaterfallChart(canvasId, r, u, yMax) {
-      const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       const vals = WF_STEPS.map(s => +(r[s.key + '_' + u] || 0));
@@ -1269,7 +1330,7 @@
       document.getElementById('kpi-ms-tar').innerHTML = fmt(tarCO2) + '<span class="kpi-unit"> CO₂/yr</span>';
       document.getElementById('kpi-ms-save').innerHTML = fmt(saving) + '<span class="kpi-unit"> CO₂/yr</span>';
       document.getElementById('kpi-ms-pct').innerHTML = pct.toFixed(1) + '<span class="kpi-unit">%</span>';
-      const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       if (msChart) msChart.destroy();
@@ -1338,7 +1399,7 @@
         const rW = calcRow(v, p), rC = calcRow(v, pCity);
         labels.push(v.label); worldBars.push(+rW.wtw_pkm.toFixed(2)); cityBars.push(+rC.wtw_pkm.toFixed(2));
       });
-      const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       if (cityChart) cityChart.destroy();
