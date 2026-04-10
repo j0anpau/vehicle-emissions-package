@@ -250,10 +250,12 @@ The model automatically validates inputs and raises `ValueError` if:
 
 ## Interactive web application
 
-An interactive web tool is deployed at [j0anpau.github.io/vehicle-emissions-package](https://j0anpau.github.io/vehicle-emissions-package/) where you can:
+An interactive web tool is deployed at ([https://j0anpau.github.io/vehicle-emissions-package/](https://vehicle-emissions-package.vercel.app)) where you can:
 
 - Adjust parameters dynamically (grid carbon intensity, passenger loads, consumption, PHEV shares)
 - Visualise and compare lifecycle emissions across all transport technologies
+- Rough City Emissions Calculator
+    - If X people switch from one mode to another, how much CO₂ does the city save per year? Define population, daily travel behaviour, and a target modal mix to see the impact.
 - Download the resulting data for your own sustainability studies
 
 This tool is designed for researchers, urban planners, and policymakers who need to assess transport emission profiles at the vehicle, city, regional, or country level -- enabling evidence-based decisions on fleet electrification, modal shift strategies, and infrastructure investment.
