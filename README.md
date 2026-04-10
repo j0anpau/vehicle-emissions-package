@@ -1,4 +1,4 @@
-# pkm-lifecycle-emissions
+# vehicle-emissions-package
 
 A configurable Python package for calculating transport lifecycle emissions.
 It generates a DataFrame with **Well-to-Wheel (WTW)** and **embodied/LCA** emissions
@@ -22,9 +22,9 @@ Requirements: Python >= 3.10, pandas >= 2.0
 ## Quick start
 
 ```python
-from pkm_lifecycle_emissions import build_df_merged_final
+from vehicle_emissions_package import df_lifecycle
 
-df = build_df_merged_final(electric_wtt=475)  # gCO2/kWh (ITF 2020, World)
+df = df_lifecycle(electric_wtt=475)  # gCO2/kWh (ITF 2020, World)
 print(df)
 ```
 
@@ -232,7 +232,7 @@ df = build_df_merged_final(
 ### Explicit configuration workflow
 
 ```python
-from pkm_lifecycle_emissions import (
+from vehicle_emissions_package import (
     get_default_model_config,
     build_df_merged_final_from_config,
 )

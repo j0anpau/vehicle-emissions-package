@@ -1126,7 +1126,6 @@
     const FONT = 'Inter, sans-serif';
 
     function mkChart(canvasId, labels, datasets, unit) {
-      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#888' : '#6b6b63';
       return new Chart(document.getElementById(canvasId), {
@@ -1212,7 +1211,6 @@
     ];
 
     function buildWaterfallChart(canvasId, r, u, yMax) {
-      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       const vals = WF_STEPS.map(s => +(r[s.key + '_' + u] || 0));
@@ -1330,7 +1328,6 @@
       document.getElementById('kpi-ms-tar').innerHTML = fmt(tarCO2) + '<span class="kpi-unit"> CO₂/yr</span>';
       document.getElementById('kpi-ms-save').innerHTML = fmt(saving) + '<span class="kpi-unit"> CO₂/yr</span>';
       document.getElementById('kpi-ms-pct').innerHTML = pct.toFixed(1) + '<span class="kpi-unit">%</span>';
-      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       if (msChart) msChart.destroy();
@@ -1399,7 +1396,6 @@
         const rW = calcRow(v, p), rC = calcRow(v, pCity);
         labels.push(v.label); worldBars.push(+rW.wtw_pkm.toFixed(2)); cityBars.push(+rC.wtw_pkm.toFixed(2));
       });
-      const isDark = isDark;
       const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,15,13,0.07)';
       const lc = isDark ? '#999' : '#6b6b63';
       if (cityChart) cityChart.destroy();
